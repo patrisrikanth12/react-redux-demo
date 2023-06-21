@@ -1,24 +1,32 @@
 import logo from './logo.svg';
+import Header from "./components/Header";
+import Body from "./components/Body";
+
 import './App.css';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { addPosts } from './actions/actionCreators';
+
+function getPosts() {
+  return async (dispatch, state) => {
+    const {data} = await axios.get("https://jsonplaceholder.typicode.com/posts");
+    dispatch(addPosts(data));
+  }
+}
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getPosts());
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <>
+    <Header />
+    <Body />
+   </>
   );
 }
 
